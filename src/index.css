@@ -1,0 +1,179 @@
+*{
+  padding:0;
+  margin: 0;
+}
+
+
+/* landingPage */
+
+.landingPageContainer{
+  width: 100%;
+  height: 100%;
+  background: url("./assets/background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+}
+
+.landingPageContainer nav{
+ padding-inline: 1.2rem;
+ padding-block: 1.6rem;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+}
+
+
+.landingPageContainer nav .naveHeader{
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.landingPageContainer nav .navlist{
+  display: flex;
+  gap: 1.6rem;
+  cursor: pointer;
+}
+
+
+.landingMainContainer{
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 3rem;
+  height: 100vh;
+  align-items: center;
+}
+
+.landingMainContainer > div:nth-child(1){
+  font-size:  2.2rem;
+}
+
+.landingMainContainer > div:nth-child(1) div[role='button'] {
+  background: #D97500;
+  width: fit-content;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-top: 1.9rem;
+}
+
+.landingMainContainer > div:nth-child(1) div[role='button'] a {
+  text-decoration: none;
+  color: white;
+}
+
+.landingMainContainer > div:nth-child(2) img{
+  height: 80vh;
+  width:auto;
+}
+
+/* home component */
+.navBar{
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ padding-inline: 20px;
+ text-align: center;
+}
+
+.meetContainer {
+  display: flex;
+  padding-inline: 20px;
+  height: 80vh;
+  gap: 10vw;
+  justify-content: center;
+}
+
+.leftPanel {
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+}
+
+.rightPanel {
+  display: flex;
+  align-items: center;
+}
+
+.rightPanel > img {
+  width: 30vw;
+  height: auto;
+  border-radius: 20px;
+}
+
+/* CreateMeeting */
+.createMeetingContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+ 
+}
+.createMeeting {
+margin-inline: 10px;
+ padding: 10px;
+ width: 100vw;
+}
+.scheduleCard{
+  margin-inline: 10px;
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+/* responsive */
+@media (max-width: 945px) {
+  .landingPageContainer nav .naveHeader{
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  .landingPageContainer nav .navlist{
+    gap: 0.8rem;
+  }
+
+  .landingMainContainer{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .landingMainContainer > div:nth-child(1){
+    font-size:  1.2rem;
+  }
+
+  .landingMainContainer > div:nth-child(1) div[role='button'] {
+    padding: 0.5rem;
+  }
+  
+  .landingMainContainer > div:nth-child(2) img{
+    height: 50vh;
+    width:auto;
+  }
+
+  /* home */
+  .meetContainer {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .leftPanel {
+    height: 20%;
+  }
+  
+  .rightPanel > img {
+    width: 60vw;
+  }
+  
+}
+
+@media (max-width: 319px) {
+
+  .landingMainContainer > div:nth-child(2) img{
+    height: 40vh;
+    width:auto;
+  }
+}
