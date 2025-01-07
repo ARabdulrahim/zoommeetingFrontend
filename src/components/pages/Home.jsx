@@ -47,7 +47,7 @@ function Home() {
       </div>
 
       <div className="rightPanel">
-        <img srcSet="/src/assets/logo3.png" alt="" />
+        <img srcSet="\public\logo3.png" alt="" />
       </div>
     </div>
     </>
