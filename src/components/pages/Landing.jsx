@@ -28,7 +28,7 @@ function Landing() {
           </div>
         </div>
         <div>
-          <img src="\public\mobile.png" alt="img" />
+          <img src="/public/mobile.png" alt="img" />
         </div>
       </div>
     </div>
