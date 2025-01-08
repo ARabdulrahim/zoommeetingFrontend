@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate, Link } from 'react-router-dom';
+import logo from '/mobile.png';
 
 
 
@@ -28,7 +29,7 @@ function Landing() {
           </div>
         </div>
         <div>
-          <img src="/public/mobile.png" alt="img" />
+          <img src={logo} alt="img" />
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, IconButton, TextField } from '@mui/material';
 import RestoreIcon from '@mui/icons-material/Restore';
 import { AuthContext } from '../contexts/AuthContext';
+import  logo from '/logo3.png';
 
 
 function Home() {
@@ -47,7 +48,7 @@ function Home() {
       </div>
 
       <div className="rightPanel">
-        <img srcSet="/public/logo3.png" alt="" />
+        <img src={logo} alt="" />
       </div>
     </div>
     </>
