@@ -14,7 +14,6 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import { Button } from '@mui/material';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import PasswordIcon from '@mui/icons-material/Password';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 function CreateMeeting() {
