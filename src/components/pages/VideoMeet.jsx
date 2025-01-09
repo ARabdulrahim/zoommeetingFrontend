@@ -27,7 +27,7 @@ export default function VideoMeet() {
 
     var socketRef = useRef();
     let socketIdRef = useRef();
-    let localVideoref = useRef();
+    let localVideoRef = useRef();
     let [videoAvailable, setVideoAvailable] = useState(true);
     let [audioAvailable, setAudioAvailable] = useState(true);
     let [video, setVideo] = useState([]);
@@ -86,8 +86,8 @@ export default function VideoMeet() {
                 const userMediaStream = await navigator.mediaDevices.getUserMedia({ video: videoAvailable, audio: audioAvailable });
                 if (userMediaStream) {
                     window.localStream = userMediaStream;
-                    if (localVideoref.current) {
-                        localVideoref.current.srcObject = userMediaStream;
+                    if (localVideoRef.current) {
+                        localVideoRef.current.srcObject = userMediaStream;
                     }
                 }
             }
@@ -96,28 +96,14 @@ export default function VideoMeet() {
         }
     };
 
-
-    useEffect(() => {
-        if (video !== undefined && audio !== undefined) {
-            getUserMedia();
-        }
-    }, [video, audio])
-
-    let getMedia = () => {
-        setVideo(videoAvailable);
-        setAudio(audioAvailable);
-        connectToSocketServer();
-
-    }
-
-
+    
     let getUserMediaSuccess = (stream) => {
         try {
             window.localStream.getTracks().forEach(track => track.stop())
         } catch (e) { console.log(e) }
 
         window.localStream = stream
-        localVideoref.current.srcObject = stream
+        localVideoRef.current.srcObject = stream
 
         for (let id in connections) {
             if (id === socketIdRef.current) continue
@@ -139,13 +125,13 @@ export default function VideoMeet() {
             setAudio(false);
 
             try {
-                let tracks = localVideoref.current.srcObject.getTracks()
+                let tracks = localVideoRef.current.srcObject.getTracks()
                 tracks.forEach(track => track.stop())
             } catch (e) { console.log(e) }
 
             let blackSilence = (...args) => new MediaStream([black(...args), silence()])
             window.localStream = blackSilence()
-            localVideoref.current.srcObject = window.localStream
+            localVideoRef.current.srcObject = window.localStream
 
             for (let id in connections) {
                 connections[id].addStream(window.localStream)
@@ -169,50 +155,17 @@ export default function VideoMeet() {
                 .catch((e) => console.log(e))
         } else {
             try {
-                let tracks = localVideoref.current.srcObject.getTracks()
+                let tracks = localVideoRef.current.srcObject.getTracks()
                 tracks.forEach(track => track.stop())
             } catch (e) { }
         }
     }
-
-    let getDislayMediaSuccess = (stream) => {
-        try {
-            window.localStream.getTracks().forEach(track => track.stop())
-        } catch (e) { console.log(e) }
-
-        window.localStream = stream
-        localVideoref.current.srcObject = stream
-
-        for (let id in connections) {
-            if (id === socketIdRef.current) continue
-
-            connections[id].addStream(window.localStream)
-
-            connections[id].createOffer().then((description) => {
-                connections[id].setLocalDescription(description)
-                    .then(() => {
-                        socketRef.current.emit('signal', id, JSON.stringify({ 'sdp': connections[id].localDescription }))
-                    })
-                    .catch(e => console.log(e))
-            })
+     
+    useEffect(() => {
+        if (video !== undefined && audio !== undefined) {
+            getUserMedia();
         }
-
-        stream.getTracks().forEach(track => track.onended = () => {
-            setScreen(false)
-
-            try {
-                let tracks = localVideoref.current.srcObject.getTracks()
-                tracks.forEach(track => track.stop())
-            } catch (e) { console.log(e) }
-
-            let blackSilence = (...args) => new MediaStream([black(...args), silence()])
-            window.localStream = blackSilence()
-            localVideoref.current.srcObject = window.localStream
-
-            getUserMedia()
-
-        })
-    }
+    }, [video, audio])  
 
     let gotMessageFromServer = (fromId, message) => {
         var signal = JSON.parse(message)
@@ -236,6 +189,7 @@ export default function VideoMeet() {
         }
     }
 
+    //add message
     const addMessage = (data, sender, socketIdSender) => {
         setMessages((prevMessages) => [
             ...prevMessages,
@@ -246,6 +200,7 @@ export default function VideoMeet() {
         }
     };
 
+    //Connect to Server
     let connectToSocketServer = () => {
         socketRef.current = io.connect(server_url, { secure: false })
 
@@ -311,7 +266,7 @@ export default function VideoMeet() {
                         window.localStream = blackSilence()
                         connections[socketListId].addStream(window.localStream)
                     }
-                })
+                });
 
                 if (id === socketIdRef.current) {
                     for (let id2 in connections) {
@@ -333,6 +288,61 @@ export default function VideoMeet() {
             })
         })
     }
+
+
+    let getMedia = () => {
+        setVideo(videoAvailable);
+        setAudio(audioAvailable);
+        connectToSocketServer();
+
+    }
+
+
+    
+   
+
+    let getDislayMediaSuccess = (stream) => {
+        try {
+            window.localStream.getTracks().forEach(track => track.stop())
+        } catch (e) { console.log(e) }
+
+        window.localStream = stream
+        localVideoRef.current.srcObject = stream
+
+        for (let id in connections) {
+            if (id === socketIdRef.current) continue
+
+            connections[id].addStream(window.localStream)
+
+            connections[id].createOffer().then((description) => {
+                connections[id].setLocalDescription(description)
+                    .then(() => {
+                        socketRef.current.emit('signal', id, JSON.stringify({ 'sdp': connections[id].localDescription }))
+                    })
+                    .catch(e => console.log(e))
+            })
+        }
+
+        stream.getTracks().forEach(track => track.onended = () => {
+            setScreen(false)
+
+            try {
+                let tracks = localVideoRef.current.srcObject.getTracks()
+                tracks.forEach(track => track.stop())
+            } catch (e) { console.log(e) }
+
+            let blackSilence = (...args) => new MediaStream([black(...args), silence()])
+            window.localStream = blackSilence()
+            localVideoRef.current.srcObject = window.localStream
+
+            getUserMedia()
+
+        })
+    }
+
+   
+
+    
 
     let silence = () => {
         let ctx = new AudioContext()
@@ -376,7 +386,7 @@ export default function VideoMeet() {
 
     let handleEndCall=()=>{
         try{
-            let tracks=localVideoref.current.srcObject.getTracks();
+            let tracks=localVideoRef.current.srcObject.getTracks();
             tracks.forEach(track => track.stop())
         }catch(e){ console.log(e)};
         
@@ -404,7 +414,7 @@ export default function VideoMeet() {
 
 
                     <div>
-                        <video ref={localVideoref} autoPlay muted></video>
+                        <video ref={localVideoRef} autoPlay muted></video>
                     </div>
 
                 </div> :
@@ -461,7 +471,7 @@ export default function VideoMeet() {
                     </div>
 
 
-                    <video className='meetUserVideo' ref={localVideoref} autoPlay muted></video>
+                    <video className='meetUserVideo' ref={localVideoRef} autoPlay muted></video>
 
                     <div className='conferenceView'>
                         {videos.map((video) => (

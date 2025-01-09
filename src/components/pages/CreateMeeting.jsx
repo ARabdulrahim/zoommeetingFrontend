@@ -15,12 +15,13 @@ import { Button } from '@mui/material';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PasswordIcon from '@mui/icons-material/Password';
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 function CreateMeeting() {
     const[toggle, setToggle]=useState(false);
     const[date, setDate]=useState();
     const[time,setTime]=useState();
-    const[meetingCode, setMeetingCode]=useState();
+    const[meetingCode, setMeetingCode]=useState(null);
  
     let data={
       "date": date,
@@ -62,26 +63,35 @@ function CreateMeeting() {
     setToggle(!toggle);
  }
 
+ let GenerateMtCode=()=>{
+   let code=Math.floor(Math.random() * 900000) + 100000;
+   setMeetingCode(code);
+ }
   return (
     <>
     <div className='createMeetingContainer'>
     <Card className='createMeeting' sx={{ maxWidth: 345 }}>
       <h2>Create Meeting</h2>
+
         <div style={{paddingBottom:"20px", marginTop:"15px", display:"flex"}}>
-           <CalendarMonthIcon style={{height:"45px", width:"40px"}}/>
+           <label htmlFor="date"><CalendarMonthIcon style={{height:"45px", width:"40px"}}/></label>
             <TextField label="____________Date" type='date' id='date' fullWidth value={date} onChange={(e)=> setDate(e.target.value)}/>
         </div>
+
         <div style={{paddingBottom:"20px", display:"flex"}}>
-            <AccessAlarmIcon style={{height:"45px", width:"40px"}}/>
+            <label htmlFor="time"><AccessAlarmIcon style={{height:"45px", width:"40px"}}/></label>
             <TextField label="HH:MM AM/PM"  id="time" fullWidth value={time} onChange={(e)=> setTime(e.target.value)}/>
         </div>
+
         <div style={{paddingBottom:"20px", display:"flex"}}>
-           <PasswordIcon style={{height:"45px", width:"40px"}}/>
-            <TextField  label="Meeting Code" type="number" id='mtCode' fullWidth value={meetingCode} onChange={(e)=> setMeetingCode(e.target.value)}/>
+           <label htmlFor="mtCode"><RefreshIcon onClick={GenerateMtCode} style={{height:"45px", width:"40px"}}/></label>
+           {meetingCode == null ?  <TextField  label="Generate Meeting Code"  id='mtCode' fullWidth/>:
+             <TextField  id='mtCode' fullWidth value={meetingCode} />
+           }
         </div>
+
         <Button variant="contained" onClick={handleSubmit}>Generate Meeting</Button>
       </Card>
-      
     </div>
     <div>
    { toggle ? 
